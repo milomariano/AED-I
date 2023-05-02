@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Função para trocar dois elementos de um array
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Função para selecionar o pivô e dividir o array em duas partes
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high]; // seleciona o último elemento como pivô
+    int i = (low - 1); // índice do menor elemento
+
+    for (int j = low; j <= high - 1; j++) {
+        // Se o elemento atual é menor ou igual ao pivô
+        if (arr[j] <= pivot) {
+            i++; // incrementa o índice do menor elemento
+            swap(&arr[i], &arr[j]); // troca os elementos
+        }
+    }
+    swap(&arr[i + 1], &arr[high]); // coloca o pivô na posição correta
+    return (i + 1);
+}
+
+// Função que implementa o Quick Sort
+void quick_sort(int arr[], int low, int high) {
+    if (low < high) {
+        // divide o array e encontra a posição do pivô
+        int pi = partition(arr, low, high);
+
+        // ordena os subarrays recursivamente
+        quick_sort(arr, low, pi - 1);
+        quick_sort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    printf("Digite o valor de n: ");
+    scanf("%d", &n);
+    int arr[n];
+
+    // preenche o array com elementos aleatórios
+    for (int i = 0; i < n; i++) {
+        arr[i] = rand() % 1000;
+    }
+
+    clock_t start_time, end_time;
+    double time_used;
+
+    start_time = clock(); // marca o tempo de início
+
+    quick_sort(arr, 0, n - 1); // ordena o array
+
+    end_time = clock(); // marca o tempo de término
+    time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Array ordenado:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    printf("\nTempo de execucao: %lf segundos\n", time_used);
+
+    return 0;
+}
