@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Função que realiza o Selection Sort
+void selection_sort(int arr[], int n) {
+    int i, j, min_idx, temp;
+    // Percorre todo o array
+    for (i = 0; i < n - 1; i++) {
+        // Encontra o menor elemento a partir da posição i
+        min_idx = i;
+        for (j = i + 1; j < n; j++) {
+            if (arr[j] < arr[min_idx]) {
+                min_idx = j;
+            }
+        }
+        // Troca o menor elemento encontrado com o elemento da posição i
+        temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
+    }
+}
+
+int main() {
+    int n, i;
+    clock_t start_time, end_time;
+    double time_used;
+
+    printf("Digite o valor de n: ");
+    scanf("%d", &n);
+
+    // Aloca espaço para o array
+    int* arr = (int*)malloc(n * sizeof(int));
+
+    // Preenche o array com números aleatórios entre 0 e 999
+    srand(time(NULL));
+    for (i = 0; i < n; i++) {
+        arr[i] = rand() % 1000;
+    }
+
+    start_time = clock(); // marca o tempo de início
+
+    selection_sort(arr, n); // ordena o array
+
+    end_time = clock(); // marca o tempo de término
+    time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Array ordenado:\n");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    printf("\nTempo de execucao: %lf segundos\n", time_used);
+
+    // Libera a memória alocada para o array
+    free(arr);
+
+    return 0;
+}
