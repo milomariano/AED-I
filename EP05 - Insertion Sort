@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void insertion_sort(int arr[], int n) {
+    int i, j, key;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+int main() {
+    int i;
+    int arr[5000];
+    clock_t start_time, end_time;
+    double time_used;
+
+    // Preenchendo o array com números aleatórios
+    srand(time(NULL)); // semente para a função rand()
+    for (i = 0; i < 5000; i++) {
+        arr[i] = rand() % 10000; // gerando números de 0 a 9999
+    }
+
+    start_time = clock(); // marca o tempo de início
+
+    insertion_sort(arr, 5000); // ordena o array
+
+    end_time = clock(); // marca o tempo de término
+    time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("Array ordenado:\n");
+    for (i = 0; i < 5000; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    printf("\nTempo de execucao: %lf segundos\n", time_used);
+
+    return 0;
+}
