@@ -1,1 +1,75 @@
+#include <stdio.h>
+#include <stdbool.h>
+#define INFINITY 9999999
+
+int minimum(int a, int b) 
+  {
+    return (a < b) ? a : b;
+  }
+
+int findShortestPath(int graph[][1001], int numVertices, int startVertex, int endVertex, int targetVertex) 
+  {
+    int distances[numVertices + 1]; 
+    bool visited[numVertices + 1]; 
+    int i, j;
+
+    // Inicializa as distâncias e visitados para cada vértice
+    for (i = 1; i <= numVertices; i++) {
+        distances[i] = INFINITY;
+        visited[i] = false;
+    }
+
+    distances[startVertex] = 0;
+
+    // Executa o algoritmo de Dijkstra
+    for (i = 1; i <= numVertices; i++) {
+        int u = -1;
+
+        // Encontra o vértice não visitado com a menor distância
+        for (j = 1; j <= numVertices; j++) {
+            if (!visited[j] && (u == -1 || distances[j] < distances[u]))
+                u = j;
+        }
+
+        visited[u] = true;
+
+        // Atualiza as distâncias
+        for (j = 1; j <= numVertices; j++) {
+            if (graph[u][j] > 0 && !visited[j]) {
+                if (u == targetVertex || j == targetVertex)
+                    continue;
+                distances[j] = minimum(distances[j], distances[u] + graph[u][j]);
+            }
+        }
+    }
+
+    return distances[endVertex];
+}
+
+int main() {
+    int numVertices, numEdges, vertexA, vertexB, startVertex, endVertex, targetVertex;
+
+    while (scanf("%d %d", &numVertices, &numEdges) != EOF) {
+        int graph[1001][1001] = {0}; // Matriz de adjacência do grafo
+
+        // Leitura dos valores de numVertices e numEdges
+        // Construção do grafo
+        for (int i = 0; i < numEdges; i++) {
+            scanf("%d %d", &vertexA, &vertexB);
+            graph[vertexA][vertexB] = 1;
+            graph[vertexB][vertexA] = 1;
+        }
+
+        // Leitura dos valores de startVertex, endVertex e targetVertex
+        scanf("%d %d %d", &startVertex, &endVertex, &targetVertex);
+
+        // Cálculo do menor número de horas
+        int shortestHours = findShortestPath(graph, numVertices, startVertex, endVertex, targetVertex);
+
+        // Exibição do resultado
+        printf("%d\n", shortestHours);
+    }
+
+    return 0;
+}
 
