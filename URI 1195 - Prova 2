@@ -1,0 +1,122 @@
+/*
+Programa de João Pedro Mariano RA 148212
+Prova 2 - Algoritmos e Estrutura de Dados I - Arlindo.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+//Declaraçao da estrutura de dados para guardar as informações da arvore
+typedef struct arvore
+{
+  int valor;
+  struct arvore *esq;
+  struct arvore *dir;
+} arvore;
+
+//função que lê os dados na ordem pré fixa
+void prefix(arvore *r)
+{
+  if (r)
+  {
+    printf(" %d", r->valor);
+    prefix(r->esq);
+    prefix(r->dir);
+  }
+}
+
+//função que lê os dados na ordem pós fixa
+void posfix(arvore *r)
+{
+  if (r)
+  { 
+    posfix(r->esq);
+    posfix(r->dir);
+    printf(" %d", r->valor);
+  }
+}
+//função que faz leitura na ordem infixa
+void infix(arvore *r)
+{
+  if (r)
+  {
+     infix(r->esq);
+     printf(" %d", r->valor);
+     infix(r->dir);  
+  }
+}
+//Função que insere informações na estrutura de dados
+arvore* insere(arvore *r, int valor)
+{
+  if (!r)
+  {
+    r = (arvore *) malloc(sizeof(arvore));
+    r->valor = valor;
+    r->esq = r->dir = NULL; 
+  }
+  else if (r->valor > valor)
+    r->esq = insere(r->esq, valor);
+  else
+    r->dir = insere(r->dir, valor);
+  return r;
+}
+
+//Função que tira dados da árvore
+void apaga(arvore *r)
+{
+  if (r)
+  {
+     apaga(r->esq);
+     apaga(r->dir);
+     free(r);
+     r = NULL;
+  }
+}
+//Chamada das funções
+arvore* insere(arvore *, int);
+void prefix(arvore *);
+void infix(arvore *);
+void posfix(arvore *);
+void apaga(arvore *);
+
+//Função "principal"
+int main ()
+{
+  int i, valor = 0, casos = 1, numnos = 0, numcas = 0; 
+  scanf("%d", &numcas);
+  while (numcas--)
+  {
+     arvore *r = NULL;
+     scanf("%d", &numnos); 
+     for (i = 0; i < numnos; i++)
+      {
+        scanf("%d", &valor);
+        r = insere(r, valor);
+      }
+    //Chamada de funções e prints - finalização do programa
+    //São varias linhas de print prints pra manter a formatação correta pra leitura do beecrowd.
+    printf("Case %d:\n", casos++);
+    printf("Pre.:");
+    //chamada de função de leitura em ordem prefixa
+    prefix(r);
+    printf("\n");
+    printf("In..:");
+    //chamada de função de leitura em ordem Infixa
+    infix(r);
+    printf("\n");
+    printf("Post:");
+    //chamada de função de leitura em ordem posfixa
+    posfix(r);
+    //pula 2 linhas pra manter formatação pedida.
+    printf("\n");
+    printf("\n");
+    //faz liberação de memória
+    apaga(r);
+  }
+}
+
+
+
+
+
+
