@@ -1,0 +1,23 @@
+//João Pedro Mariano - RA 148212
+#include <stdio.h>
+
+int main()
+{
+    int num_lines, i, j, k, comprimento, result;
+    char vetor[51];//numero máximo de caracteres, segundo o exercicio, é 50. 50 + 1 pra evitar problemas.
+    
+    scanf("%d",&num_lines); // Lê o número de linhas a serem processadas
+    for(i = 0; i < num_lines; i++)// Loop para processar cada vetor
+     {
+        scanf("%d%*c", &comprimento); // Lê o comprimento do vetor
+        result = 0; // Inicializa o valor result como zero para cada vetor
+        for(j = 0; j < comprimento; j++){ // Loop para percorrer cada caractere na vetor
+            scanf("%[^\n]%*c",&vetor); // Lê o vetor de texto até encontrar uma quebra
+            for(k = 0; vetor[k] != '\0'; k++){ // Loop para percorrer cada caractere na vetor
+                result += vetor[k] - 65 + j + k; // Calcula o valor result somando o valor numérico do caractere, o índice da vetor e o índice do caractere
+            }
+        }
+        printf("%d\n", result); // Imprime o valor total calculado para a vetor atual
+      }
+    return 0;
+}
