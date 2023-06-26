@@ -1,0 +1,25 @@
+//Programa de João Pedro Mariano RA 148212 - Beecrowd Contest 1172
+#include <stdio.h>
+ 
+int main() {
+    //Declaração do vetor de 10 lacunas "X":
+    int X[10], i;
+    
+    //Inicia ciclo de repetição para recebimento de valores
+    for (i=0; i<10; i++)
+    {
+        scanf("%d", &X[i]);
+        //Cria condição de substituição de valor
+        if(X[i] <= 0)
+        {
+            X[i] = 1;
+        }
+    }
+    
+    //Ciclo de repetição para imprimir valores contidos no vetor
+    for(i=0; i<10; i++)
+    {
+        printf("X[%d] = %d\n", i, X[i]);
+    }
+     return 0;
+}
