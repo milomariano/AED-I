@@ -1,0 +1,75 @@
+// Programa de João Pedro Mariano 148212
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+#define MAX 1000
+
+typedef struct no {
+    struct no *prox;
+    int valor;
+} knot;
+
+typedef struct {
+    knot *inicio, *final;
+} hash;
+
+// Função para inicializar a estrutura hash
+void inicializa(hash *vetor, int tamanho) {
+    int i;
+    for (i = 0; i < tamanho; i++) {
+        vetor[i].inicio = NULL;
+        vetor[i].final = NULL;
+    }
+}
+
+// Função para inserir um elemento na tabela hash
+void inserir(hash *vetor, int indice, int elemento) {
+    knot *aux = (knot *)malloc(sizeof(knot));
+    aux->valor = elemento;
+    aux->prox = NULL;
+    if (vetor[indice].inicio == NULL)
+        vetor[indice].inicio = aux;
+    else
+        vetor[indice].final->prox = aux;
+    vetor[indice].final = aux;
+}
+
+// Função para imprimir a lista encadeada de uma posição da tabela hash
+void hashprint(knot *inicio, int indice) {
+    knot *aux = inicio;
+    printf("%d -> ", indice);
+    while (aux != NULL) {
+        printf("%d -> ", aux->valor);
+        aux = aux->prox;
+    }
+    printf("\\");
+    printf("\n");
+}
+
+int main() {
+    hash vetor[MAX];
+    int chave, quantidade, numCasos, elemento, i, j;
+
+    scanf("%d", &numCasos); // Lê o número de casos de teste
+
+    for (j = 0; j < numCasos; j++) {
+        scanf("%d %d", &chave, &quantidade); // Lê a chave e a quantidade de elementos
+
+        inicializa(vetor, chave); // Inicializa a estrutura para o tamanho da chave
+
+        for (i = 0; i < quantidade; i++) {
+            scanf("%d", &elemento); // Lê o elemento
+            inserir(vetor, elemento % chave, elemento); // Insere o elemento na tabela hash
+        }
+
+        for (i = 0; i < chave; i++)
+            hashprint(vetor[i].inicio, i); // Imprime a tabela hash
+
+        if (j + 1 < numCasos)
+            printf("\n");
+    }
+
+    return 0;
+}
