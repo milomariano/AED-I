@@ -1,0 +1,98 @@
+//João Pedro Mariano 148212
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{  
+  char character;
+  int i, j, x, linhas, colunas, total, indexlin, indexcol, incrementa, dir; // Declaração das variáveis
+  scanf("%d %d", &linhas, &colunas); // Lê os valores de linhas e colunas a partir da entrada padrão
+  char imagem[colunas][linhas + 1]; // Declaração da matriz de caracteres
+	indexlin = 0;//Solução para problema de runtime error.
+	indexcol = 0;//Solução para problema de runtime error.
+	x = 0;//Solução para problema de runtime error.
+
+    for (i = 0; i < colunas; i++)
+        scanf("%s", imagem[i]); // Lê as linhas da matriz de caracteres
+
+    total = linhas * colunas; // Calcula o valor total 
+
+    for (incrementa = 1; incrementa <= total;)
+    {
+        if (imagem[indexlin][indexcol] == '>') // Se o caractere for '>'
+        {
+            indexcol++; // Incrementa a coluna
+            incrementa++; // Incrementa incrementa
+            dir = 1; // Atribui 1 a dir (direção para a direita)
+            if (indexcol >= linhas) // Se indexcol for maior ou igual a linhas, sai do loop
+                break;
+        }
+        else if (imagem[indexlin][indexcol] == 'v') // Se o caractere for 'v'
+        {
+            indexlin++; // Incrementa a linha
+            incrementa++; // Incrementa incrementa
+            dir = 2; // Atribui 2 a dir (direção para baixo)
+            if (indexlin >= colunas) // Se indexlin for maior ou igual a colunas, sai do loop
+                break;
+        }
+        else if (imagem[indexlin][indexcol] == '<') // Se o caractere for '<'
+        {
+            indexcol--; // Decrementa a coluna
+            incrementa++; // Incrementa incrementa
+            dir = 3; // Atribui 3 a dir (direção para a esquerda)
+            if (indexcol < 0) // Se indexcol for menor que 0, sai do loop
+                break;
+        }
+        else if (imagem[indexlin][indexcol] == '^') // Se o caractere for '^'
+        {
+            indexlin--; // Decrementa a linha
+            incrementa++; // Incrementa incrementa
+            dir = 4; // Atribui 4 a dir (direção para cima)
+            if (indexlin < 0) // Se indexlin for menor que 0, sai do loop
+                break;
+        }
+        else if (imagem[indexlin][indexcol] == '*') // Se o caractere for '*'
+        {
+            incrementa = 1000; // Atribui 1000 a incrementa (valor especial para indicar a detecção do caractere '*')
+            break;
+        }
+        else if (imagem[indexlin][indexcol] == '.') // Se o caractere for '.'
+        {
+            if (dir == 1) // Se a direção for para a direita
+            {
+                indexcol++; // Incrementa a coluna
+                incrementa++; // Incrementa incrementa
+                if (indexcol >= linhas) // Se indexcol for maior ou igual a linhas, sai do loop
+                    break;
+            }
+            else if (dir == 2) // Se a direção for para baixo
+            {
+                indexlin++; // Incrementa a linha
+                incrementa++; // Incrementa incrementa
+                if (indexlin >= colunas) // Se indexlin for maior ou igual a colunas, sai do loop
+                    break;
+            }
+            else if (dir == 3) // Se a direção for para a esquerda
+            {
+                indexcol--; // Decrementa a coluna
+                incrementa++; // Incrementa incrementa
+                if (indexcol < 0) // Se indexcol for menor que 0, sai do loop
+                    break;
+            }
+            else if (dir == 4) // Se a direção for para cima
+            {
+                indexlin--; // Decrementa a linha
+                incrementa++; // Incrementa incrementa
+                if (indexlin < 0) // Se indexlin for menor que 0, sai do loop
+                    break;
+            }
+        }
+    }
+
+    if (incrementa == 1000)
+        printf("*\n"); // Se incrementa for igual a 1000, imprime '*' (detecção do caractere '*')
+    else
+        printf("!\n"); // Caso contrário, imprime '!' (nenhum caractere '*' detectado)
+
+    return 0;
+}
