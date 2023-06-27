@@ -1,0 +1,86 @@
+//Programa de João Pedro Mariano - RA 148212
+//Observação: variável int short foi uma solução encontrada para o problema de time limit
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXSIZE 10000
+// Struct com informações necessárias pra uso da árvore
+typedef struct knot
+{
+	struct knot *rig; // Ponteiro para o nó filho à direita
+	struct knot *lef; // Ponteiro para o nó filho à esquerda
+  char let; // Letra armazenada no nó
+} knot;
+
+// Função para fazer a exibição em notação pós-fixa
+int pdisp(knot *no)
+{
+  	if (no == NULL)
+    	return 0; // Retorna se o nó for nulo
+  	pdisp(no->lef); // Percorre a subárvore esquerda
+  	pdisp(no->rig); // Percorre a subárvore direita
+  	printf("%c", no->let); // Imprime a letra armazenada no nó
+}
+
+// Função para encontrar a posição do caractere em uma string
+int find(char *str, int start, int end, char let)
+{
+  	short i;
+  	for (i = start; i <= end; i++)
+  	{
+    		if (str[i] == let)
+        	return i; // Retorna a posição do caractere se for encontrado
+  	}
+  	return -1; // Retorna -1 se o caractere não for encontrado
+}
+
+// Função para criar um novo nó da árvore
+knot* new(char let)
+{
+  	knot *no = (knot *) malloc(sizeof(knot)); // Aloca memória para o novo nó
+  	no->let = let; // Define a letra armazenada no nó
+  	no->lef = no->rig = NULL; // Inicializa os ponteiros dos filhos como nulos
+  	return no; // Retorna o ponteiro para o novo nó
+}
+
+short index; // Variável global para acompanhar o índice atual durante a construção da árvore
+knot* build_tree(char *in, char *pre, int instart, int inend); // Constrói uma árvore binária a partir de uma expressão em notação infixa
+knot* new(char let); // Cria um novo nó da árvore
+int find(char *str, int start, int end, char let); // Encontra a posição de um caractere em uma string
+int pdisp(knot *tree); // Exibe a expressão em notação pós-fixa - pós-fixa show
+
+
+// Função para construir uma árvore binária a partir de uma expressão em notação infixa
+knot* build_tree(char *in, char *pre, int instart, int inend)
+{
+  	int indexin;
+  	if (instart > inend)
+    		return NULL; // Retorna nulo se a faixa de índices da expressão infixa estiver vazia
+  	knot *no = new(pre[index++]); // Cria um novo nó com o próximo caractere da expressão pré-fixa
+  	if (instart == inend)
+    		return no; // Retorna o nó se a faixa de índices da expressão infixa tiver apenas um elemento
+  	indexin = find(in, instart, inend, no->let); // Encontra a posição do caractere atual na expressão infixa
+  	no->lef = build_tree(in, pre, instart, indexin - 1); // Constrói a subárvore esquerda
+  	no->rig = build_tree(in, pre, indexin + 1, inend); // Constrói a subárvore direita
+  	return no; // Retorna o nó raiz da árvore construída
+}
+
+int main()
+{  
+    char pre[MAXSIZE], in[MAXSIZE]; // Expressões em notação pré-fixa e infixa  
+  	short cqtt; // Número de casos de teste
+    short qttknot, i; // Número de nós na árvore e variável auxiliar
+  	scanf("%hu", &cqtt); // Lê o número de casos de teste
+  
+  	while (cqtt--)
+  	{
+		// Lê o número de nós na árvore, a expressão em notação pré-fixa e a expressão em notação infixa
+		scanf("%hu %s %s%*c", &qttknot, pre, in);
+		index = 0; // Reinicia o índice para cada caso de teste
+		knot *raiz = build_tree(in, pre, 0, qttknot - 1); // Constrói a árvore binária
+		pdisp(raiz); // Exibe a expressão em notação pós-fixa
+		printf("\n"); // Imprime uma quebra de linha para o próximo caso de teste
+  	}
+}
+
+
