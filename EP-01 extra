@@ -1,0 +1,202 @@
+//Código de João Pedro Mariano RA 148212 - AED I - Noturno
+#include <stdlib.h>
+#include <stdio.h>
+
+//declaração das variaveis universais das listas e pilha
+int stack, lista, listab;
+//Define struct chamada est
+typedef struct est
+{
+    struct est *prox;//Pointer do proximo knot da lista do tipo struct est
+    int knot;
+}est;
+
+//Define uma struct chamada estdad
+typedef struct estdad
+{
+    struct est *prior; //priority
+    struct est *normal; //normal
+    int topo;//Variavel que guarda o topo da stack
+    int *p; //ponteiro auxiliar para a stack
+}estdad;
+estdad *criaED();
+estdad *criaED()
+{
+    estdad *aux;
+    //Cria estrutura de dados
+    aux = (estdad*)malloc(sizeof(estdad));
+    //Inicializa os dados
+    aux->p = NULL;
+    aux->normal = NULL;
+    aux->prior = NULL;
+    //Recebe 0 por ser o topo da estrutura
+    aux->topo = 0;
+    return aux;
+}
+void Inserir(estdad *estdadx, int knot)
+{
+    //Ponteiros do tipo struct est
+    est *en, *ep, *ant, *aux;
+    int prim=1;
+    if(listab == 1)
+    {
+        ep = (est*)malloc(sizeof(est));
+        ep->knot = knot;
+        ep->prox = NULL;
+
+        if(estdadx->prior == NULL) 
+        {
+          estdadx->prior = ep;
+        }
+        else 
+        {
+          aux = estdadx->prior;
+
+          while(aux != NULL)
+           {
+              if(ep->knot > aux->knot) 
+              {
+                break;
+              }
+
+              prim=0;
+              ant = aux;
+              aux = aux->prox;
+            }
+
+            if(prim == 1)
+            {
+                ant = estdadx->prior;
+                estdadx->prior = ep;
+                ep->prox = ant;
+            } 
+            else 
+            {
+                ant->prox = ep;
+                ep->prox = aux;
+            }
+        }
+    }
+
+    if(lista == 1)
+    {
+        en = (est*)malloc(sizeof(est));
+        en->knot = knot;
+        en->prox = NULL;
+
+        if(estdadx->normal == NULL) 
+        {
+            estdadx->normal = en;
+        }
+        else 
+        {
+            aux = estdadx->normal;
+
+            while(aux->prox != NULL) aux =  aux->prox;
+
+            aux->prox = en;
+        }
+    }
+
+    if(stack == 1)
+    {
+        if(estdadx->topo == 0) 
+        {
+            estdadx->p = (int*)malloc(sizeof(int));
+        }
+        else
+        {
+            estdadx->p = (int*)realloc(estdadx->p ,sizeof(int)*(estdadx->topo+1));
+        }
+        estdadx->p[estdadx->topo] = knot;
+        estdadx->topo++;
+    }
+}
+
+void Excluir(estdad *estdadx, int knot)
+{
+    est *aux;
+    if(estdadx->p != NULL && stack != 0){
+        if(estdadx->p[estdadx->topo-1] == knot){
+            estdadx->p = (int*)realloc(estdadx->p, sizeof(int)*(estdadx->topo-1));
+            estdadx->topo--;
+        } else stack = 0;
+    }
+    if(estdadx->prior != NULL && listab != 0)
+    {
+        aux = estdadx->prior;
+        if(aux->knot == knot){
+            aux = aux->prox;
+            free(estdadx->prior);
+            estdadx->prior = aux;
+        } 
+        else 
+        {
+            listab = 0;
+        }
+    }
+    if(estdadx->normal!=NULL && lista!= 0)
+    {
+        aux = estdadx->normal;
+
+        if(aux->knot == knot){
+            aux = aux->prox;
+            free(estdadx->normal);
+            estdadx->normal = aux;
+        } else lista = 0;
+    }
+}
+
+//função principal do código
+int main()
+  {
+  //Ponteiro do tipo struct estdad
+  estdad *estdadx;
+  //Declaração de variáveis int  
+  int i=0, opcao, repeticao, knot;
+    //Enquanto o valor lido pelo scanf e alocado na variavel repeticao for igual a 1...
+    while(scanf("%d", &repeticao)==1)
+    {  
+      //Aloca valores nas variaveis int declaradas anteriormente
+      lista=1;
+      listab=1;  
+      stack=1;
+        
+      //recebe valor retornado da função criaED
+      estdadx = criaED();
+      //for cicla o numero de vezes dado no inicio.
+      for(i=0; i<repeticao; i++)
+      {
+        //Recebe variáveis da opção e do numero a ser colocado na estrutura de dados
+        scanf("%d %d", &opcao, &knot);
+        //Se opcao for = a 1, chama função de inserção na estrutura
+        if(opcao == 1) Inserir(estdadx, knot);
+        //Chama função de excluir dados da estrutura.  
+        else Excluir(estdadx, knot);
+      }
+      //Nao tem como definir o tipo de estrutura de dados nesses casos:
+      if(stack==1 && listab==1 || listab==1 && lista==1 || stack==1 && lista==1) 
+      {
+      printf("not sure\n");
+      }
+      else if(listab) 
+      {
+        printf("priority queue\n");
+      }
+      else if(lista) 
+      {
+        printf("queue\n");
+      }
+      else if(stack) 
+      {
+        printf("stack\n");
+      }
+      else 
+      {
+        printf("impossible\n");
+      }
+      //limpa ponteiro do tipo struct estdad
+      free(estdadx);
+    }
+    return 0;
+}
