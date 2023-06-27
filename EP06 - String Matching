@@ -1,0 +1,35 @@
+//Programa de João Pedro Mariano
+#include <stdio.h>
+
+int main(void) {
+    char string[100001];
+    int foundZelda = 0;
+    int index = 0;
+
+    scanf("%s", string); // Lê uma string do usuário
+
+    while (string[index] != '\0') { // Itera sobre cada caractere da string até encontrar o caractere nulo ('\0')
+        if (string[index + 0] == 'z' || string[index + 0] == 'Z') { // Verifica se o caractere atual é 'z' ou 'Z'
+            if (string[index + 1] == 'e' || string[index + 1] == 'E') { // Verifica se o próximo caractere é 'e' ou 'E'
+                if (string[index + 2] == 'l' || string[index + 2] == 'L') { // Verifica se o próximo caractere é 'l' ou 'L'
+                    if (string[index + 3] == 'd' || string[index + 3] == 'D') { // Verifica se o próximo caractere é 'd' ou 'D'
+                        if (string[index + 4] == 'a' || string[index + 4] == 'A') { // Verifica se o próximo caractere é 'a' ou 'A'
+                            foundZelda = 1; // Define a variável foundZelda como 1 para indicar que a sequência foi encontrada
+                            break; // Sai do loop while
+                        }
+                    }
+                }
+            }
+        }
+
+        index++; // Incrementa o índice para avançar para o próximo caractere
+    }
+
+    if (foundZelda == 1) {
+        printf("Link Bolado\n"); // A sequência "Zelda" foi encontrada na string
+    } else {
+        printf("Link Tranquilo\n"); // A sequência "Zelda" não foi encontrada na string
+    }
+
+    return 0;
+}
