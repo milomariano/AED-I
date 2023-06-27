@@ -1,0 +1,39 @@
+//Programa de Joao Pedro Mariano - 148212
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LENGTH 21
+
+int main() {
+    int numCasosTeste, numIdiomas;
+    char idiomaBase[MAX_LENGTH];
+    char idiomaAtual[MAX_LENGTH];
+
+    scanf("%d", &numCasosTeste);
+
+    for (int casoTeste = 0; casoTeste < numCasosTeste; ++casoTeste) {
+        scanf("%d", &numIdiomas);
+
+        int mesmoIdioma = 1;
+        scanf("%s", idiomaBase);
+
+        // Percorre os idiomas restantes
+        for (int i = 1; i < numIdiomas; ++i) {
+            scanf("%s", idiomaAtual);
+
+            // Compara o idioma atual com o idioma base
+            if (strcmp(idiomaBase, idiomaAtual) != 0) {
+                mesmoIdioma = 0;
+            }
+        }
+
+        // Verifica se todos os idiomas são iguais
+        if (mesmoIdioma) {
+            printf("%s\n", idiomaBase);
+        } else {
+            printf("ingles\n");
+        }
+    }
+
+    return 0;
+}
